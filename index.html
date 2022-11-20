@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Online Quiz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<center>
+<span id="header">Online quiz</span>
+</center>
+<table align="left"id="btn-ids">
+<tr> <td align="left"><button id="add-quiz-id" class="btn">Add a quiz</button> </td> </tr><br>
+<tr><td align="left"><button id="attempt-btn" class="btn">Attempt a quiz</button></td></tr>
+<tr><td align="left"><button class="btn">My quizzes</button></td></tr>
+</table>
+
+<div id="question-container">
+1.<input id="q-text">
+</div>
+<div id="text-container">
+This is a website where you can make quizzes and send them to your friends.<br>
+They could attend the quiz by entering the code that you get when you make a quiz
+</div>
+<script src="script.js"></script>
+</body>
+</html>
