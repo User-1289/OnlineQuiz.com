@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Online Quiz</title>
+<title>Add a Quiz</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
@@ -24,7 +24,8 @@ font-size:20px;
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-<h2>Enter the question in the box and<br>provide options and also the answer</h2>
+<h1 id="afQuiz" style="display:none;"></h1>
+<h2 id="header-2">Enter the question in the box and<br>provide options and also the answer</h2>
 <div id="question-container">
 <h2>Question 1</h2>
 <input type="text" id="q-text"><br><br>
@@ -33,7 +34,7 @@ font-size:20px;
 <input class="options" placeholder="Option c"id="option-c">
 <input class="options" placeholder="Option d"id="option-d"><br><br>
 <input id="answer-txt" placeholder="Answer"><br><br>
-<button onclick="nextQ()">Enter next question</button><br><br>
+<button onclick="nextQ()"> Save and enter next question</button><br><br>
 <button onclick="makeQuiz()">Submit the quiz</button>
 </div>
 
@@ -53,7 +54,7 @@ let database = firebase.firestore()
 
 let arr = []
 
-let quizNum = Number(prompt("How much questions are you going to enter "))
+let quizNum = Number(prompt("How much questions are you going to enter(as numeric like 3, 5)"))
 
 	for(let i = 0; i <= quizNum - 1; i++)
 	{
@@ -80,34 +81,38 @@ function nextQ()
 	console.log(arr)
 counter++;
 	//arr.push(obj)
-	let qText = document.getElementById('q-text').value
-	let optionA = document.getElementById('option-a').value
-	let optionB = document.getElementById('option-b').value
-	let optionC = document.getElementById('option-c').value
-	let optionD = document.getElementById('option-d').value
-	let tAnswer = document.getElementById('answer-txt').value
+	let qText = document.getElementById('q-text')
+	let optionA = document.getElementById('option-a')
+	let optionB = document.getElementById('option-b')
+	let optionC = document.getElementById('option-c')
+	let optionD = document.getElementById('option-d')
+	let tAnswer = document.getElementById('answer-txt')
 	
-	arr[counter].Question = qText
-	arr[counter].OptionA = optionA
-	arr[counter].OptionB = optionB
-	arr[counter].OptionC = optionC
-	arr[counter].OptionD = optionD
-	arr[counter].Answer = tAnswer
+	arr[counter].Question = qText.value
+	arr[counter].OptionA = optionA.value
+	arr[counter].OptionB = optionB.value
+	arr[counter].OptionC = optionC.value
+	arr[counter].OptionD = optionD.value
+	arr[counter].Answer = tAnswer.value
 	//console.log(arr)
-	qText = ''
-	optionA = ''
-	optionB = ''
-	optionC = ''
-	optionD = ''
-	tAnswer = ''
+	qText.value = ''
+	optionA.value = ''
+	optionB.value = ''
+	optionC.value = ''
+	optionD.value = ''
+	tAnswer.value = ''
 }
 function makeQuiz()
 {     
+		document.getElementById("header-2").style.display='none'
+		document.getElementById('question-container').style.display='none'
+		let aftQuiz = document.getElementById('afQuiz')
+		aftQuiz.style.display='inline'
+		aftQuiz.innerText = "Your quiz has been successfully submitted"
 		  for(let i = 0; i < str.length; i++)
 		  {
 			rand = Math.floor(Math.random() * str.length)
 			letters+=str.charAt(rand)
-			//console.log(letters)
 		  }
 	docRef
 	.add({
