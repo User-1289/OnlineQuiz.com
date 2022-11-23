@@ -26,6 +26,7 @@ font-size:20px;
 
 <h1 id="afQuiz" style="display:none;"></h1>
 <h2 id="header-2">Enter the question in the box and<br>provide options and also the answer</h2>
+	<h4 id="unique-code"></h4>
 <div id="question-container">
 <h2>Question 1</h2>
 <input type="text" id="q-text"><br><br>
@@ -119,6 +120,7 @@ function makeQuiz()
 		UniqueId: letters,
 		QuizData: arr,
 	})
+	document.getElementById("unique-code").innerText = letters
 }
 
 </script>
