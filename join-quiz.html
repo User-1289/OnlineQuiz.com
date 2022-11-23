@@ -3,6 +3,10 @@
 <title>Join a quiz</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+#question-txt{
+font-weight:bold;
+font-size:25px;
+}
 body{
 background:url("background.jpg");
 }
@@ -16,9 +20,23 @@ h1,h2{
 	height:200px;
 	text-align:left;
 }
-input[type="radio"]
-{
-	
+.options{
+font-size:20px;
+}
+#submit-btn{
+	background:orange;
+	width:400px;
+	border-radius:10px;
+	height:30px;
+	font-size:20px;
+	cursor:pointer;
+}
+#submit-btn:hover{
+background:limegreen;
+}
+#result{
+	display:none;
+	text-align:center;
 }
 </style>
 </head>
@@ -27,28 +45,35 @@ input[type="radio"]
 <hr>
 <center>
 <div id="quiz-container">
-<h2 id="question-txt"></h2>
-<div class="options-a">
+<center>
+<span id="question-txt"></span>
+</center>
+<div class="options">
 <span id="option-a-id">
-<input class="options-cl"type="radio" name="opt-btns">
+<input onclick="getVal(event)" class="options-cl"type="radio" name="opt-btns">
 </span>
 </div>
 <div class="options">
 <span id="option-b-id">
-<input class="options-cl"type="radio" name="opt-btns">
+<input onclick="getVal(event)" class="options-cl"type="radio" name="opt-btns">
 </span>
 </div>
 <div class="options">
 <span id="option-c-id">
-<input class="options-cl"type="radio" name="opt-btns">
+<input onclick="getVal(event)" class="options-cl"type="radio" name="opt-btns">
 </span>
 </div>
 <div class="options">
 <span id="option-d-id">
-<input class="options-cl"type="radio" name="opt-btns">
+<input onclick="getVal(event)" class="options-cl"type="radio" name="opt-btns">
 </span>
 </div>
+<center>
+<button id="submit-btn">Submit and attempt next question</button>
+<button onclick="someCrazy()">See my score fo developers</button>
+</center>
 </div>
+<h1 id="result"></h1>
 </center>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -67,16 +92,27 @@ let firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 let database = firebase.firestore()
 
+let quizId = prompt("Enter the code that you got from the person who made this quiz")
+function getVal(e)
+{
+//vAnswer = ''
+vAnswer = e.target.parentElement.innerText
+console.log(vAnswer + ' onclick')
+}
+
 let change_text1;
 let change_text2;
 let change_text3;
 let change_text4;
 
+let score = 0;
+let realAnswer;
 let wQuizD;
 let currentQuiz;
+let ansCounter = -1;
 let counter = 0;
 let docRef = database.collection("Quiz-data")
-docRef.where("UniqueId", "==", "s9fweagm6ma1i6bshm4wibsif56d3rtami9")
+docRef.where("UniqueId", "==", quizId)
 .get()
 .then((querySnapshot) =>
 {
@@ -105,23 +141,93 @@ docRef.where("UniqueId", "==", "s9fweagm6ma1i6bshm4wibsif56d3rtami9")
 		
 		vQuestion.innerText= wQuizD[0].Question
 		
-		
-		//optionA.innerText = wQuizD[0].OptionA
-		//optionB.innerText = wQuizD[0].OptionB
-		//optionC.innerText = wQuizD[0].OptionC
-		//optionD.innerText = wQuizD[0].OptionD
+			/*if(vAnswer==wQuizD[0].Answer)
+			{
+				score++;
+				console.log(score)
+			}*/
 	})
 })
-
-let element;
+let uAnswer = ''
+/*let element;
 let radioBtns = document.querySelectorAll('.options-cl')
 for(element of radioBtns)
 {
 	element.onclick = () =>
 	{
 	//console.log('sui')
-		console.log(element.parentElement.innerText)
+		console.log()
 	}
+}*/
+
+	//alert(e.target.parentElement.innerText)
+	let submitBtn = document.getElementById('submit-btn')
+	submitBtn.onclick = () =>
+	{
+		docRef.where("UniqueId", "==",quizId)
+.get()
+	.then((querySnapshot) =>
+	{
+		querySnapshot.forEach((doc) =>
+		{
+				let vQuestion = document.getElementById('question-txt')
+		let optionA = document.getElementById('option-a-id')
+		let optionB = document.getElementById('option-b-id')
+		let optionC = document.getElementById('option-c-id')
+		let optionD = document.getElementById('option-d-id')
+		
+		let allOptions = document.querySelectorAll('.options-cl')
+		for(let element of allOptions)
+		{
+			element.checked = false
+		}
+					counter++;
+					ansCounter++;
+			currentQuiz = wQuizD[counter]
+			if(currentQuiz!=null)
+			{
+			
+			realAnswer = wQuizD[ansCounter].Answer
+			console.log(ansCounter + " counter")
+						//console.log(realAnswer + " db answer")
+						//console.log(vAnswer + " outer in if condition")
+			vQuestion.innerText = currentQuiz.Question
+			//console.log(realAnswer)
+		change_text1 = optionA.childNodes[0]
+		change_text1.nodeValue = currentQuiz.OptionA
+		
+		change_text2 = optionB.childNodes[0]
+		change_text2.nodeValue = currentQuiz.OptionB
+		
+		change_text3 = optionC.childNodes[0]
+		change_text3.nodeValue = currentQuiz.OptionC
+		
+		change_text4 = optionD.childNodes[0]
+		change_text4.nodeValue = currentQuiz.OptionD
+		
+			if(vAnswer==realAnswer)
+			{
+//			console.log(realAnswer)
+			console.log(vAnswer + " if condition manz")
+				score++;
+			//	console.log(score)
+			}
+		}
+				else
+			{
+			let realScore = score + 1
+				document.getElementById('quiz-container').style.display='none'
+				let result = document.getElementById('result')
+				result.style.display='inline'
+				result.innerText = "You got " + realScore + " questions correctly"
+				alert("You scored " + realScore + " marks")
+			}
+		})
+	})	
+}	
+function someCrazy()
+{
+	alert(score + 1)
 }
 </script>
 </body>
