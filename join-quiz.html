@@ -70,6 +70,7 @@ background:limegreen;
 </div>
 <center>
 <button id="submit-btn">Submit and attempt next question</button>
+<button onclick="someCrazy()">See my score fo developers</button>
 </center>
 </div>
 <h1 id="result"></h1>
@@ -148,18 +149,7 @@ docRef.where("UniqueId", "==", quizId)
 	})
 })
 let uAnswer = ''
-/*let element;
-let radioBtns = document.querySelectorAll('.options-cl')
-for(element of radioBtns)
-{
-	element.onclick = () =>
-	{
-	//console.log('sui')
-		console.log()
-	}
-}*/
 
-	//alert(e.target.parentElement.innerText)
 	let submitBtn = document.getElementById('submit-btn')
 	submitBtn.onclick = () =>
 	{
@@ -187,7 +177,7 @@ for(element of radioBtns)
 			{
 			
 			realAnswer = wQuizD[ansCounter].Answer
-			console.log(ansCounter + " counter")
+		//	console.log(ansCounter + " counter")
 						//console.log(realAnswer + " db answer")
 						//console.log(vAnswer + " outer in if condition")
 			vQuestion.innerText = currentQuiz.Question
@@ -224,6 +214,10 @@ for(element of radioBtns)
 		})
 	})	
 }	
+function someCrazy()
+{
+	alert(score + 1)
+}
 </script>
 </body>
 </html>
