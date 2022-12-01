@@ -1,3 +1,4 @@
+
 <html>
 <head>
 <title>Join a quiz</title>
@@ -112,7 +113,7 @@ let currentQuiz;
 let ansCounter = -1;
 let counter = 0;
 let docRef = database.collection("Quiz-data")
-docRef.where("UniqueId", "==", quizId)
+docRef.where("UniqueCode", "==", quizId)
 .get()
 .then((querySnapshot) =>
 {
