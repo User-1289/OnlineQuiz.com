@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Add a Quiz</title>
+<title>Online Quiz</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
@@ -17,6 +17,12 @@ width:500px;
 height:40px;
 font-size:20px;
 }
+#after-container{
+	display:none;
+	text-align:center;
+	border:1px solid black;
+	border-radius:10px;
+}
 </style>
 </head>
 <body>
@@ -24,11 +30,15 @@ font-size:20px;
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-<h1 id="afQuiz" style="display:none;"></h1>
+<div id="after-container">
+<h1 id="afQuiz"></h1>
+<h2 id="unique-code-text">Your unique code for this quiz</h2>
+<h2 id="unique-code">Your unique code for this quiz</h2>
+</div>
 <h2 id="header-2">Enter the question in the box and<br>provide options and also the answer</h2>
-	<h4 id="unique-code"></h4>
+
 <div id="question-container">
-<h2>Question 1</h2>
+<h2 id="question-no">Question 1</h2>
 <input type="text" id="q-text"><br><br>
 <input class="options" placeholder="Option a"id="option-a">
 <input class="options" placeholder="Option b"id="option-b">
@@ -74,13 +84,18 @@ let docRef = database.collection("Quiz-data")
 
 		 // console.log(arr)
 let counter = -1;
+let qNumCounter = 1
 let letters = ''
 let rand;
 const str = 'qwertyuihjklasdfghjklvbnm#123456789' 
+let strNum = "1234567890"
+let uniqueNum = ""
 function nextQ()
 {
-	console.log(arr)
+qNumCounter++;
 counter++;
+	document.getElementById('question-no').innerText = "Question " + qNumCounter
+	console.log(arr)
 	//arr.push(obj)
 	let qText = document.getElementById('q-text')
 	let optionA = document.getElementById('option-a')
@@ -105,22 +120,47 @@ counter++;
 }
 function makeQuiz()
 {     
+	let quizTitle = prompt("Enter a title for this quiz to get this quiz's code later to share with your friends")
+	
 		document.getElementById("header-2").style.display='none'
 		document.getElementById('question-container').style.display='none'
+		document.getElementById('after-container').style.display='inline'
 		let aftQuiz = document.getElementById('afQuiz')
-		aftQuiz.style.display='inline'
+	//	aftQuiz.style.display='inline'
 		aftQuiz.innerText = "Your quiz has been successfully submitted"
 		  for(let i = 0; i < str.length; i++)
 		  {
 			rand = Math.floor(Math.random() * str.length)
 			letters+=str.charAt(rand)
 		  }
-	docRef
-	.add({
-		UniqueId: letters,
-		QuizData: arr,
-	})
-	document.getElementById("unique-code").innerText = letters
+		  		  for(let i = 0; i < strNum.length; i++)
+			  {
+				rand = Math.floor(Math.random() * strNum.length)
+				uniqueNum+=strNum.charAt(rand)
+			  }
+			  //localStorage.setItem("")
+				  if(localStorage.getItem("UniqueID")==null)
+				  {
+					localStorage.setItem("UniqueID", uniqueNum)
+				docRef
+					.add({
+					Title:quizTitle,
+						UniqueId: localStorage.getItem("UniqueID"),
+						UniqueCode: letters,
+						QuizData: arr,
+					})
+				  }
+					else
+					docRef
+					.add({
+						Title: quizTitle,
+						UniqueId: localStorage.getItem("UniqueID"),
+						UniqueCode: letters,
+						QuizData: arr,
+					})
+
+					
+		  document.getElementById("unique-code").innerText = letters
 }
 
 </script>
