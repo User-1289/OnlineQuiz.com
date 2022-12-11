@@ -200,19 +200,14 @@ let uAnswer = ''
 		}
 				else
 			{
-				if(score==0)
+				if(vAnswer==realAnswer)
 				{
-				document.getElementById('quiz-container').style.display='none'
-				let result = document.getElementById('result')
-				result.style.display='inline'
-				result.innerText = "You had not got any questions correctly"
-					return;
+					score++;
 				}
-			let realScore = score + 1
 				document.getElementById('quiz-container').style.display='none'
 				let result = document.getElementById('result')
 				result.style.display='inline'
-				result.innerText = "You got " + realScore + " questions correctly"
+				result.innerText = "You got " + score + " questions correctly"
 			}
 		})
 	})	
