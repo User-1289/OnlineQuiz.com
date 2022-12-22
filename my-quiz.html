@@ -6,6 +6,10 @@
 </head>
 <body>
 <style>
+body{
+	background: url("background.jpg");
+	font-family:sans-serif;
+}
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -15,7 +19,7 @@
 }
 
 #container{
-	background:limegreen;
+	background:lightgray;
 	width:700px;
 }
 .quiz-names{
@@ -46,6 +50,7 @@ let database = firebase.firestore()
 let counter = -1;
 let docRef = database.collection("Quiz-data")
 let wQuiz;
+let docId = ''
 	docRef.where("UniqueId", "==", localStorage.getItem("UniqueID"))
 	.get()
 	.then((querySnapshot) =>
@@ -57,20 +62,42 @@ let wQuiz;
 		
 		quizTitle.addEventListener('click', function(e)
 		{
-							let uniqueHeader = document.createElement("div")
+			
+			let brs = document.createElement('br')
+			let hid = document.createElement('span')
+			hid.innerHTML = "This quiz's competends and their scores"
+			let uniqueHeader = document.createElement("div")
 			if(e.target.innerText==doc.data().Title)
 			{
-			
 			uniqueHeader.innerText = doc.data().UniqueCode
 			quizTitle.append(uniqueHeader)
-			//console.log('sui')
-			//	alert(doc.data().UniqueCode)
+			quizTitle.append(brs)
+			quizTitle.append(hid)
+				//quizTitle.innerHTML = "This quiz's competends"
+			docId = doc.id
+			docRef.doc(docId).get().then((doc) => {
+    if (doc.exists) {
+		let usersSp = document.createElement('div')
+		wQuiz = doc.data().UserData
+			for(let i = 0; i < wQuiz.length; i++)
+			{
+		usersSp.innerText += wQuiz[i].Name + ' - ' + wQuiz[i].Score + '\n'
+		quizTitle.append(usersSp)
+				//console.log(wQuiz[i])
 			}
-			//console.log(e.target.innerText)
+    } else {
+        console.log("No such document!");
+    }
+}).catch((error) => {
+    console.log("Error getting document:", error);
+});
+
+				//wQuiz = doc.data().UserData
+				//console.log(wQuiz)
+			}
 		})
 		quizTitle.innerText = doc.data().Title
 		document.getElementById('container').append(quizTitle)
-			//alert(doc.data().Title)
 		})
 	})
 </script>
