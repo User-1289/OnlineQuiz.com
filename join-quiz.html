@@ -70,6 +70,7 @@ background:limegreen;
 </div>
 <center>
 <button id="submit-btn">Submit and attempt next question</button>
+<button onclick="someCrazy()">See my score fo developers</button>
 </center>
 </div>
 <h1 id="result"></h1>
@@ -94,6 +95,8 @@ firebase.initializeApp(firebaseConfig)
 let database = firebase.firestore()
 
 let ansCol = ''
+let docId = ''
+let nameId = prompt("Enter your name or nickname")
 let quizId = prompt("Enter the code that you got from the person who made this quiz")
 function getVal(e)
 {
@@ -117,7 +120,20 @@ let ansCounter = -1;
 let counter = 0;
 let frstAnswer;
 //getting the quiz data first time
+/*let obje = 
+	{
+	name:nameId,
+	score: j,
+	}*/
+
 let docRef = database.collection("Quiz-data")
+/*docRef.doc('SqaopPYjH28zYmYGmkoq').set({
+	Usersdata:obje
+}, { merge: true })*/
+//docRef.doc("SqaopPYjH28zYmYGmkoq").update({
+//    UserData: firebase.firestore.FieldValue.arrayUnion(obje)
+//});
+
 docRef.where("UniqueCode", "==", quizId)
 .get()
 .then((querySnapshot) =>
@@ -165,6 +181,10 @@ let uAnswer = ''
 	{
 		querySnapshot.forEach((doc) =>
 		{
+			if(quizId==doc.data().UniqueCode)
+			{
+				docId = doc.id
+			}
 					let vDiv = document.createElement('div')
 				let vQuestion = document.getElementById('question-txt')
 		let optionA = document.getElementById('option-a-id')
@@ -221,10 +241,19 @@ let uAnswer = ''
 		}
 				else
 			{
+				
 				if(vAnswer==realAnswer)
 				{
 					score++;
 				}
+				let obje = 
+				{
+				Name:nameId,
+				Score: score,
+				}
+				docRef.doc(docId).update({
+    UserData: firebase.firestore.FieldValue.arrayUnion(obje)
+});
 				//alert('suii')
 			/*if(score == 0)
 			{
@@ -248,6 +277,11 @@ let uAnswer = ''
 		})
 	})	
 }	
+
+function someCrazy()
+{
+	alert(score + 1)
+}
 </script>
 </body>
 </html>
